@@ -1,0 +1,17 @@
+MIJN COCKPIT V5 – ONLINE OPSLAG
+
+1. Je Supabase SQL-tabel cockpit_data is al aangemaakt.
+2. Controleer in Supabase > Authentication > Providers dat Email ingeschakeld is.
+3. Upload de inhoud van deze ZIP naar je Netlify-site (deploy manually).
+4. Open de app en klik Account aanmaken. Gebruik je eigen e-mailadres en een sterk wachtwoord.
+5. Bevestig indien nodig de e-mail van Supabase en meld je aan.
+6. Log met hetzelfde account in op je gsm en laptop.
+7. De app synchroniseert bij opslaan en controleert om de 12 seconden op wijzigingen.
+
+BELANGRIJK
+- Deze nieuwe versie begint met een lege database. Lokale gegevens van de vorige versie worden niet automatisch geïmporteerd.
+- Bewaar je oude ZIP en exporteer waar nodig een back-up.
+- Het oorspronkelijke losse ochtendroutine-scherm verwijst nu naar de gesynchroniseerde routine in de Cockpit om twee aparte databronnen te vermijden.
+- Bij gelijktijdige bewerking op twee toestellen kan de laatste opslag eerdere wijzigingen overschrijven.
+- Gebruik bij voorkeur één toestel tegelijk voor bewerkingen.
+- De Supabase publishable key is publiek en hoort bij de webapp. Plaats nooit service_role of secret keys in de HTML.
