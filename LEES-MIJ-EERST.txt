@@ -1,17 +1,11 @@
-MIJN COCKPIT V5 – ONLINE OPSLAG
+MIJN COCKPIT V6 – UPDATE VIA GITHUB
 
-1. Je Supabase SQL-tabel cockpit_data is al aangemaakt.
-2. Controleer in Supabase > Authentication > Providers dat Email ingeschakeld is.
-3. Upload de inhoud van deze ZIP naar je Netlify-site (deploy manually).
-4. Open de app en klik Account aanmaken. Gebruik je eigen e-mailadres en een sterk wachtwoord.
-5. Bevestig indien nodig de e-mail van Supabase en meld je aan.
-6. Log met hetzelfde account in op je gsm en laptop.
-7. De app synchroniseert bij opslaan en controleert om de 12 seconden op wijzigingen.
+1. Maak eerst in Mijn cockpit > Instellingen > Exporteren een back-up.
+2. Open https://github.com/vanbergenbea-ship-it/mijn-cockpit
+3. Vervang in de ROOT van de main-branch de 6 bestanden: index.html, ochtendroutine.html, sw.js, manifest.webmanifest, icon-192.png en icon-512.png. Je kunt dit via Add file > Upload files doen. Bevestig met Commit changes.
+4. Wacht tot GitHub Pages klaar is. Open de bestaande URL. Vernieuw de pagina indien nodig.
+5. Test aanmelden, afmelden, opnieuw aanmelden en synchronisatie op beide toestellen.
+6. Controleer daarna of Chrome op Samsung 'Installeren' aanbiedt. Dit is afhankelijk van browser en apparaat en kan niet gegarandeerd worden.
 
-BELANGRIJK
-- Deze nieuwe versie begint met een lege database. Lokale gegevens van de vorige versie worden niet automatisch geïmporteerd.
-- Bewaar je oude ZIP en exporteer waar nodig een back-up.
-- Het oorspronkelijke losse ochtendroutine-scherm verwijst nu naar de gesynchroniseerde routine in de Cockpit om twee aparte databronnen te vermijden.
-- Bij gelijktijdige bewerking op twee toestellen kan de laatste opslag eerdere wijzigingen overschrijven.
-- Gebruik bij voorkeur één toestel tegelijk voor bewerkingen.
-- De Supabase publishable key is publiek en hoort bij de webapp. Plaats nooit service_role of secret keys in de HTML.
+Dezelfde Supabase-database en dezelfde URL blijven in gebruik.
+WAARSCHUWING: werk niet met vertrouwelijke werkgegevens voordat de live website en accountisolatie daadwerkelijk getest zijn.

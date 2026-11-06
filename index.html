@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#edf2f6">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="description" content="Mijn cockpit: weekplanner van maandag tot zondag, privé, voor later, ochtendroutine en notities.">
 
 
@@ -96,7 +99,9 @@ window.COCKPIT_SUPABASE_KEY='sb_publishable_7ETjmb7cf14KyIhqNx2l1Q_bR3y4URM';
 </script>
 <script>
 (()=>{'use strict';
-const KEY='mijn_cockpit_v1';
+const LEGACY_KEY='mijn_cockpit_v1';
+let KEY='mijn_cockpit_v6_not_signed_in';
+let MORNING_KEY='mijn_ochtendroutine_v6_not_signed_in';
 const CATS=[{id:'mirho',name:'Mirho',icon:'building'},{id:'prive',name:'Privé',icon:'heart'},{id:'gezondheid',name:'Gezondheid',icon:'activity'}];
 const NAV=[{id:'dashboard',name:'Overzicht',icon:'home'},{id:'taken',name:'Weekplanner',icon:'check'},{id:'routines',name:'Ochtendroutine',icon:'sun'},{id:'notities',name:'Notities',icon:'note'},{id:'instellingen',name:'Instellingen',icon:'settings'}];
 const iconSvg={home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/>',check:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 3 3 5-6"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',repeat:'<path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/>',note:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.9l.06.06-2.2 2.2-.06-.06a1.7 1.7 0 0 0-1.9-.34 1.7 1.7 0 0 0-1 1.6V21h-3.2v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.34l-.06.06-2.2-2.2.06-.06a1.7 1.7 0 0 0 .34-1.9 1.7 1.7 0 0 0-1.6-1H5v-3.2h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.34-1.9l-.06-.06 2.2-2.2.06.06a1.7 1.7 0 0 0 1.9.34 1.7 1.7 0 0 0 1-1.6V3h3.2v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.34l.06-.06 2.2 2.2-.06.06a1.7 1.7 0 0 0-.34 1.9 1.7 1.7 0 0 0 1.6 1h.1v3.2h-.1a1.7 1.7 0 0 0-1.6 1z"/>',plus:'<path d="M12 5v14M5 12h14"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',chevron:'<path d="m9 18 6-6-6-6"/>',left:'<path d="m15 18-6-6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',heart:'<path d="M20.8 5.4a5.4 5.4 0 0 0-7.7 0L12 6.6l-1.1-1.2a5.4 5.4 0 1 0-7.7 7.6L12 21l8.8-8a5.4 5.4 0 0 0 0-7.6z"/>',building:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 21v-5h6v5M8 7h2M14 7h2M8 11h2M14 11h2"/>',activity:'<path d="M3 12h4l3-7 4 14 3-7h4"/>',waves:'<path d="M2 7c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2M2 14c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',moon:'<path d="M21 12.9A9 9 0 0 1 11.1 3 9 9 0 1 0 21 12.9z"/>',sparkles:'<path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8L19 17Z"/>',pencil:'<path d="m15 5 4 4M4 20l4.5-1 11-11a2.8 2.8 0 0 0-4-4l-11 11L4 20z"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/>',search:'<circle cx="10" cy="10" r="7"/><path d="m15.5 15.5 5 5"/>',download:'<path d="M12 3v13m0 0 5-5m-5 5-5-5M4 18v3h16v-3"/>',upload:'<path d="M12 17V4m0 0 5 5m-5-5L7 9M4 18v3h16v-3"/>',info:'<circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/>',checkmark:'<path d="m4 12 5 5L20 6"/>',menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',clipboard:'<rect x="5" y="5" width="14" height="17" rx="2"/><path d="M9 5V3h6v2M9 12h6M9 16h6"/>',close:'<path d="M5 5l14 14M19 5 5 19"/>',coffee:'<path d="M4 8h13v6a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6V8ZM17 9h2a3 3 0 0 1 0 6h-2M3 22h17"/>'};
@@ -112,7 +117,7 @@ const defaults=()=>({version:2,tasks:[],events:[],notes:[],habits:[{id:newId(),t
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.tasks)&&Array.isArray(x.events)&&Array.isArray(x.notes)&&Array.isArray(x.habits))return {...defaults(),...x,habitLog:x.habitLog||{},focusByDate:x.focusByDate||{}}}catch(e){}return defaults()}
 // De oorspronkelijke ochtendapp bewaart haar gegevens onder deze sleutel.
 // Door de sleutel en datastructuur te behouden, blijft de historiek op hetzelfde Netlify-adres bestaan.
-const MORNING_KEY='mijn_ochtendroutine_v1';
+// The account-specific morning key is assigned only after authentication.
 const MORNING_ICONS=['sun','droplet','coffee','dumbbell','wind','pill','calendar','book','heart','sparkles'];
 const FIRST_MORNING=[
  {id:'water',title:'Water of thee drinken',icon:'droplet'},
@@ -134,8 +139,8 @@ function originalMorning(){
   };
  }catch{return null}
 }
-let data=load();
-const legacyMorning=originalMorning();
+let data=defaults();
+const legacyMorning=null;
 if(legacyMorning){
  data.routineStartedOn=legacyMorning.startedOn;
  data.habits=legacyMorning.tasks;
@@ -167,6 +172,7 @@ if(legacyMorning){
  let ui={view:'dashboard',taskList:'dag',taskDay:weekdayToday(),taskFilter:'open',taskCat:'alle',taskSearch:'',noteSearch:'',routineDay:dateKey()};
 
 function saveOriginalMorning(){
+ if(!cloudUser)return;
  const done={};
  for(const [day,checked] of Object.entries(data.habitLog||{})){
   if(/^\d{4}-\d\d-\d\d$/.test(day) && checked && typeof checked==='object'){
@@ -186,7 +192,7 @@ function morningStreak(){
 }
 function morningPoints(){return Object.values(data.habitLog||{}).reduce((sum,day)=>sum+Object.values(day||{}).filter(Boolean).length*10,0)}
 
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data));saveOriginalMorning();cloudScheduleSave()}catch(err){toast('Opslag niet beschikbaar. Exporteer een back-up.')}applyTheme()}
+function save(){if(!cloudReady||!cloudUser)return;try{localStorage.setItem(KEY,JSON.stringify(data));saveOriginalMorning();cloudScheduleSave()}catch(err){toast('Opslag niet beschikbaar. Exporteer een back-up.')}applyTheme()}
 function applyTheme(){document.body.classList.toggle('dark',data.theme==='dark');document.querySelector('meta[name="theme-color"]').content=data.theme==='dark'?'#0e1625':'#f3f6fa'}
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2300)}
 function openTasks(){return data.tasks.filter(x=>!x.completed)}
@@ -203,7 +209,7 @@ function taskCount(list,day=weekdayToday()){return openTasks().filter(t=>inList(
 function eventSort(arr){return [...arr].sort((a,b)=>(a.date+' '+(a.time||'99:99')).localeCompare(b.date+' '+(b.time||'99:99')))}
 const navButton=(n)=>`<button class="nav-btn ${ui.view===n.id?'active':''}" data-action="nav" data-view="${n.id}" ${ui.view===n.id?'aria-current="page"':''}>${ico(n.icon)}<span>${n.name}</span>${n.id==='taken'&&openTasks().length?`<span class="nav-count">${openTasks().length}</span>`:''}</button>`;
 function shell(){let d=new Date();return `<div class="shell"><aside class="sidebar"><div class="brand"><div class="brand-mark">${ico('target')}</div><div><div class="brand-name">Mijn cockpit</div><div class="brand-sub">Rust in je hoofd. Grip op je dag.</div></div></div><nav class="nav" aria-label="Hoofdnavigatie"><div class="nav-section">WERKRUIMTE</div>${NAV.slice(0,4).map(navButton).join('')}</nav><nav class="nav" aria-label="Instellingen">${navButton(NAV[4])}</nav><div class="side-bottom"><div class="side-tip">${ico('sparkles')}<strong>Maak ruimte voor wat telt</strong><p>Eén plek voor je weekplanning, privé en je ochtendroutine.</p></div><div class="side-foot">Privé opgeslagen in je Supabase-account</div></div></aside><main class="main"><header class="topbar"><div class="crumb">${ico('target')} Mijn cockpit ${ico('chevron')} <strong>${NAV.find(x=>x.id===ui.view).name}</strong></div><div class="top-actions"><button class="btn primary" data-action="new-task">${ico('plus')} Nieuwe taak</button><button class="btn icon-only" data-action="nav" data-view="instellingen" aria-label="Instellingen">${ico('settings')}</button></div></header><div id="view">${renderView()}</div><div class="footer-note">Je gegevens worden online opgeslagen. Maak daarnaast geregeld een back-up.</div></main><nav class="mobile-nav" aria-label="Mobiele navigatie">${NAV.slice(0,4).map(n=>`<button class="${ui.view===n.id?'active':''}" data-action="nav" data-view="${n.id}" aria-label="${n.name}">${ico(n.icon)}${n.name}</button>`).join('')}</nav></div>`}
-function render(){document.getElementById('app').innerHTML=shell();applyTheme()}
+function render(){document.getElementById('app').innerHTML=cloudReady&&cloudUser?shell():'';applyTheme()}
 function head(eyebrow,title,sub,button=''){return `<div class="page-head"><div><div class="eyebrow">${eyebrow}</div><h1 class="page-title">${title}</h1><p class="page-sub">${sub}</p></div>${button}</div>`}
 function stat(label,num,sub,icon){return `<div class="stat"><span class="stat-label">${label}</span><div class="stat-ico">${ico(icon)}</div><div class="stat-num">${num}</div><div class="stat-sub">${sub}</div></div>`}
 function empty(icon,title,txt,action,label){return `<div class="empty"><div class="empty-ico">${ico(icon)}</div><strong>${title}</strong><p>${txt}</p>${action?`<button class="btn sm" data-action="${action}">${ico('plus')}${label}</button>`:''}</div>`}
@@ -308,7 +314,7 @@ function renderRoutines(){
 }
 function noteResults(){let list=[...data.notes].filter(n=>[n.title,n.body,cat(n.category).name].join(' ').toLowerCase().includes(ui.noteSearch.toLowerCase())).sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')));return list.length?`<div class="notes-grid">${list.map(n=>`<button class="note-card" data-action="edit-note" data-id="${esc(n.id)}"><span class="pill ${esc(n.category)}" style="align-self:flex-start">${esc(cat(n.category).name)}</span><div class="note-card-title">${esc(n.title)}</div><div class="note-preview">${esc(n.body||'Geen inhoud')}</div><div class="note-date">${new Intl.DateTimeFormat('nl-BE',{day:'numeric',month:'short',year:'numeric'}).format(new Date(n.updatedAt||Date.now()))}</div></button>`).join('')}</div>`:empty('note','Nog geen notities','Bewaar ideeën, afspraken of gedachten op één plek.','new-note','Notitie toevoegen')}
 function renderNotes(){return `${head('Ideeën en gedachten','Mijn notities','Leg vast wat je wilt onthouden.',`<button class="btn primary" data-action="new-note">${ico('plus')} Notitie maken</button>`)}<div class="filterbar"><div class="searchwrap" style="max-width:360px;width:100%">${ico('search')}<input id="note-search" placeholder="Zoeken in mijn notities..." aria-label="Zoek notities" value="${esc(ui.noteSearch)}"></div></div><div id="notes-results">${noteResults()}</div>`}
-function renderSettings(){return `${head('Jouw cockpit, jouw regels','Instellingen','Pas de weergave aan en beheer je gegevens.')}<section class="card" style="max-width:840px"><div class="card-head"><h2 class="card-title">${ico('sun')} Weergave</h2></div><div class="setting-row"><div><strong>Kleurenthema</strong><small>Kies een lichte of donkere omgeving.</small></div><div class="swatches"><button class="swatch ${data.theme!=='dark'?'selected':''}" data-action="theme" data-theme="light">Licht</button><button class="swatch ${data.theme==='dark'?'selected':''}" data-action="theme" data-theme="dark">Donker</button></div></div><div class="setting-row"><div><strong>Back-up downloaden</strong><small>Bewaar je weektaken, privétaken, ochtendroutine en notities als JSON-bestand.</small></div><button class="btn" data-action="export">${ico('download')} Exporteren</button></div><div class="setting-row"><div><strong>Back-up herstellen</strong><small>Importeer een eerder geëxporteerd bestand. De huidige inhoud wordt vervangen.</small></div><button class="btn" data-action="import">${ico('upload')} Importeren</button></div><div class="setting-row"><div><strong>Alle gegevens wissen</strong><small>Verwijdert alles in je cockpit en ochtendroutine op dit toestel.</small></div><button class="btn danger" data-action="reset">${ico('trash')} Wissen</button></div></section><div class="notice" style="max-width:840px;margin-top:16px">${ico('info')}<p><strong>Privacy en bewaren:</strong> je gegevens worden in je persoonlijke Supabase-account opgeslagen en tussen je toestellen gesynchroniseerd. Voor vertrouwelijke organisatiegegevens is een beveiligd systeem geschikter. Wis je je browsergegevens, dan kunnen je notities verloren gaan: exporteer dus geregeld een back-up.</p></div>`}
+function renderSettings(){return `${head('Jouw cockpit, jouw regels','Instellingen','Pas de weergave aan en beheer je gegevens.')}<section class="card" style="max-width:840px"><div class="card-head"><h2 class="card-title">${ico('sun')} Weergave</h2></div><div class="setting-row"><div><strong>Kleurenthema</strong><small>Kies een lichte of donkere omgeving.</small></div><div class="swatches"><button class="swatch ${data.theme!=='dark'?'selected':''}" data-action="theme" data-theme="light">Licht</button><button class="swatch ${data.theme==='dark'?'selected':''}" data-action="theme" data-theme="dark">Donker</button></div></div><div class="setting-row"><div><strong>Back-up downloaden</strong><small>Bewaar je weektaken, privétaken, ochtendroutine en notities als JSON-bestand.</small></div><button class="btn" data-action="export">${ico('download')} Exporteren</button></div><div class="setting-row"><div><strong>Back-up herstellen</strong><small>Importeer een eerder geëxporteerd bestand. De huidige inhoud wordt vervangen.</small></div><button class="btn" data-action="import">${ico('upload')} Importeren</button></div><div class="setting-row"><div><strong>Afmelden</strong><small>Sluit je account af op dit toestel. Andere gebruikers zien jouw gegevens niet.</small></div><button class="btn" data-action="logout">Afmelden</button></div><div class="setting-row"><div><strong>Alle gegevens wissen</strong><small>Verwijdert alles in je cockpit en ochtendroutine op dit toestel.</small></div><button class="btn danger" data-action="reset">${ico('trash')} Wissen</button></div></section><div class="notice" style="max-width:840px;margin-top:16px">${ico('info')}<p><strong>Privacy en bewaren:</strong> je gegevens worden in je persoonlijke Supabase-account opgeslagen en tussen je toestellen gesynchroniseerd. Voor vertrouwelijke organisatiegegevens is een beveiligd systeem geschikter. Wis je je browsergegevens, dan kunnen je notities verloren gaan: exporteer dus geregeld een back-up.</p></div>`}
 function renderView(){switch(ui.view){case 'taken':return renderTasks();case 'routines':return renderRoutines();case 'notities':return renderNotes();case 'instellingen':return renderSettings();default:return renderDashboard()}}
 const selectOptions=sel=>CATS.map(c=>`<option value="${c.id}" ${sel===c.id?'selected':''}>${c.name}</option>`).join('');
 function modal(title,body){const m=document.getElementById('modal-root');m.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-head"><div id="modal-title" class="modal-title">${title}</div><button class="btn icon-only" type="button" data-action="close-modal" aria-label="Sluiten">${ico('close')}</button></div>${body}</div>`;m.classList.add('show');document.body.style.overflow='hidden';setTimeout(()=>m.querySelector('input:not([type=hidden]),textarea')?.focus(),50)}
@@ -381,6 +387,7 @@ function importBackup(file){if(!file)return;if(file.size>8e6){toast('Bestand is 
  case 'save-focus':data.focusByDate[dateKey()]=document.getElementById('focus-today').value.trim();save();toast('Focus bewaard');break;
  case 'filter-tasks':ui.taskFilter=b.dataset.filter;render();break;
  case 'theme':data.theme=b.dataset.theme;save();render();break;
+ case 'logout':cloudLogout();break;
  case 'export':downloadBackup();break;
  case 'import':document.getElementById('import-file').click();break;
  case 'reset':if(confirm('Weet je zeker dat je ALLE gegevens in deze browser wilt wissen? Dit kun je niet ongedaan maken zonder back-up.')){data=defaults();data.habits=FIRST_MORNING.map(x=>({...x}));data.routineStartedOn=dateKey();save();render();toast('Cockpit opnieuw ingesteld')}break;
@@ -451,31 +458,52 @@ document.addEventListener('dragend',()=>{
  draggingTaskId=null;document.querySelectorAll('.drop-target,.dragging').forEach(el=>el.classList.remove('drop-target','dragging'));
 });
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&document.getElementById('modal-root').classList.contains('show'))closeModal()});
-window.addEventListener('storage',ev=>{if(ev.key===KEY){data=load();render();toast('Bijgewerkt vanuit ander tabblad')}else if(ev.key===MORNING_KEY){const fresh=originalMorning();if(fresh){data.routineStartedOn=fresh.startedOn;data.habits=fresh.tasks;data.habitLog={};for(const [day,ids] of Object.entries(fresh.done)){data.habitLog[day]={};for(const id of ids)data.habitLog[day][id]=true}render();toast('Ochtendroutine bijgewerkt')}}});
+window.addEventListener('storage',ev=>{if(!cloudReady||!cloudUser)return;if(ev.key===KEY){data=load();render();toast('Bijgewerkt vanuit ander tabblad')}else if(ev.key===MORNING_KEY){const fresh=originalMorning();if(fresh){data.routineStartedOn=fresh.startedOn;data.habits=fresh.tasks;data.habitLog={};for(const [day,ids] of Object.entries(fresh.done)){data.habitLog[day]={};for(const id of ids)data.habitLog[day][id]=true}render();toast('Ochtendroutine bijgewerkt')}}});
 // Synchronisatie: één volledig document per gebruiker. Alleen ophalen wanneer er
 // geen lokale wijzigingen wachten; zo worden niet-bevestigde edits niet overschreven.
-let cloudClient=null,cloudUser=null,cloudReady=false,cloudDirty=false,cloudBusy=false,cloudTimer=null,cloudLastRemote='';
+let cloudClient=null,cloudUser=null,cloudReady=false,cloudDirty=false,cloudBusy=false,cloudTimer=null,cloudLastRemote='',cloudEpoch=0;
 const cloudGate=document.getElementById('cloud-gate'),cloudMessage=document.getElementById('cloud-message'),cloudStatus=document.getElementById('cloud-status');
 function cloudLabel(s){cloudStatus.hidden=false;cloudStatus.textContent=s}
+function setAccountKeys(userId){
+ // UUID from Supabase Auth; never use a global, shared cache for account data.
+ KEY='mijn_cockpit_v6_'+userId;
+ MORNING_KEY='mijn_ochtendroutine_v6_'+userId;
+}
+function clearAccountScreen(){
+ cloudReady=false;cloudUser=null;cloudDirty=false;cloudLastRemote='';
+ clearTimeout(cloudTimer);cloudTimer=null;data=defaults();
+ KEY='mijn_cockpit_v6_not_signed_in';MORNING_KEY='mijn_ochtendroutine_v6_not_signed_in';
+ document.getElementById('app').replaceChildren();cloudGate.hidden=false;cloudStatus.hidden=true;
+ document.getElementById('cloud-password').value='';
+}
+async function cloudLogout(){
+ // Hide personal data immediately, before any network operation.
+ cloudEpoch++;clearAccountScreen();cloudMessage.textContent='Je bent afgemeld.';
+ try{const {error}=await cloudClient.auth.signOut();if(error)cloudMessage.textContent='Afmelden mislukt: '+error.message}
+ catch(e){cloudMessage.textContent='Verbinding niet beschikbaar. Sluit deze pagina en probeer opnieuw.'}
+}
 function cloudScheduleSave(){
  if(!cloudReady||!cloudUser)return;
  cloudDirty=true;cloudLabel('☁️ Wijzigingen opslaan…');clearTimeout(cloudTimer);
  cloudTimer=setTimeout(cloudPush,650);
 }
 async function cloudPush(){
- if(!cloudDirty||cloudBusy||!cloudUser)return;
+ if(!cloudDirty||cloudBusy||!cloudReady||!cloudUser)return;
+ const userId=cloudUser.id,epoch=cloudEpoch;
  cloudBusy=true;cloudDirty=false;
  const snapshot=JSON.stringify(data);
  try{
-  const {error}=await cloudClient.from('cockpit_data').upsert({user_id:cloudUser.id,gegevens:JSON.parse(snapshot)},{onConflict:'user_id'});
+  const {error}=await cloudClient.from('cockpit_data').upsert({user_id:userId,gegevens:JSON.parse(snapshot)},{onConflict:'user_id'});
   if(error)throw error;
-  cloudLastRemote=snapshot;cloudLabel('☁️ Opgeslagen');
- }catch(e){cloudDirty=true;cloudLabel('⚠️ Niet online opgeslagen');console.error('Cockpit opslaan:',e)}
- finally{cloudBusy=false;if(cloudDirty){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudPush,2500)}}
+  if(epoch===cloudEpoch&&cloudUser?.id===userId){cloudLastRemote=snapshot;cloudLabel('☁️ Opgeslagen')}
+ }catch(e){if(epoch===cloudEpoch&&cloudUser?.id===userId){cloudDirty=true;cloudLabel('⚠️ Niet online opgeslagen')}console.error('Cockpit opslaan:',e)}
+ finally{cloudBusy=false;if(cloudDirty&&cloudReady){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudPush,2500)}}
 }
 async function cloudPull(){
  if(!cloudReady||cloudDirty||cloudBusy||!cloudUser||document.hidden)return;
- const {data:row,error}=await cloudClient.from('cockpit_data').select('gegevens').eq('user_id',cloudUser.id).maybeSingle();
+ const userId=cloudUser.id,epoch=cloudEpoch;
+ const {data:row,error}=await cloudClient.from('cockpit_data').select('gegevens').eq('user_id',userId).maybeSingle();
+ if(epoch!==cloudEpoch||!cloudReady||cloudUser?.id!==userId)return;
  if(error){cloudLabel('⚠️ Synchronisatie niet beschikbaar');return}
  if(row&&row.gegevens){const incoming=JSON.stringify(row.gegevens);if(incoming!==cloudLastRemote){
   cloudLastRemote=incoming;data={...defaults(),...row.gegevens};
@@ -483,18 +511,22 @@ async function cloudPull(){
  }}
 }
 async function cloudStart(session){
- cloudUser=session.user;cloudReady=false;cloudGate.hidden=false;cloudMessage.textContent='Gegevens ophalen…';
- const {data:row,error}=await cloudClient.from('cockpit_data').select('gegevens').eq('user_id',cloudUser.id).maybeSingle();
+ if(!session?.user)return;
+ const epoch=++cloudEpoch,userId=session.user.id;
+ clearAccountScreen();cloudUser=session.user;setAccountKeys(userId);
+ cloudMessage.textContent='Gegevens ophalen…';
+ const {data:row,error}=await cloudClient.from('cockpit_data').select('gegevens').eq('user_id',userId).maybeSingle();
+ if(epoch!==cloudEpoch||cloudUser?.id!==userId)return;
  if(error){cloudMessage.textContent='Databasefout: '+error.message;return}
- if(row&&row.gegevens){data={...defaults(),...row.gegevens};cloudLastRemote=JSON.stringify(row.gegevens);localStorage.setItem(KEY,JSON.stringify(data));saveOriginalMorning()}
- else { // Nieuw account: begin met een lege cockpit, niet met oude browserdata.
-  data=defaults();data.habits=FIRST_MORNING.map(x=>({...x}));data.routineStartedOn=dateKey();
-  localStorage.setItem(KEY,JSON.stringify(data));saveOriginalMorning();
- }
- cloudReady=true;cloudGate.hidden=true;applyTheme();render();cloudLabel('☁️ Verbonden');
+ if(row&&row.gegevens){data={...defaults(),...row.gegevens};cloudLastRemote=JSON.stringify(row.gegevens)}
+ else {data=defaults();data.habits=FIRST_MORNING.map(x=>({...x}));data.routineStartedOn=dateKey()}
+ // Only the signed-in user's cache is written. Old shared caches are removed.
+ try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.removeItem(LEGACY_KEY);localStorage.removeItem('mijn_ochtendroutine_v1')}catch(e){}
+ cloudReady=true;saveOriginalMorning();cloudGate.hidden=true;applyTheme();render();cloudLabel('☁️ Verbonden');
  if(!row)cloudScheduleSave();
 }
 async function cloudInit(){
+ document.getElementById('app').replaceChildren();
  if(!window.supabase){cloudMessage.textContent='Supabase kon niet laden. Controleer je internetverbinding.';return}
  cloudClient=window.supabase.createClient(window.COCKPIT_SUPABASE_URL,window.COCKPIT_SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
  document.getElementById('cloud-form').addEventListener('submit',async e=>{
@@ -517,9 +549,15 @@ async function cloudInit(){
  else cloudMessage.textContent='Maak eerst een account aan of meld je aan.';
  setInterval(cloudPull,12000);
  window.addEventListener('online',()=>{if(cloudDirty)cloudPush();else cloudPull()});
+ cloudClient.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT'){cloudEpoch++;clearAccountScreen();cloudMessage.textContent='Je bent afgemeld.'}
+  // A new sign-in from another tab must never reuse the previous user's view.
+  if(event==='SIGNED_IN'&&session?.user&&cloudUser&&session.user.id!==cloudUser.id){cloudStart(session)}
+ });
 }
 cloudInit();
-applyTheme();render();if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
+if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 })();
 </script>
 </body>
